@@ -1,14 +1,35 @@
 const express = require("express");
 const app = express();
 
-let cacheLength = 0;
+let cacheLength = 1;
+
+const getManualCalculationPi = () => {
+  let i = 1n;
+  let x = 3n * 10n ** 1020n;
+  let pi = x;
+  while (x > 0) {
+    x = (x * i) / ((i + 1n) * 4n);
+    pi += x / (i + 2n);
+    i += 2n;
+  }
+  return pi / 10n ** 20n;
+};
+
+const cachePi = String(getManualCalculationPi());
+
+const getPiValue = (length) => {
+  let pi = cachePi.substring(0, length);
+  if (length > 1) {
+    pi = pi.replace(cachePi.charAt(0), `${cachePi.charAt(0)}.`);
+  }
+  return pi;
+};
 
 const getPi = () => {
   try {
-    let pi = Math.PI.toFixed(cacheLength);
-    return pi;
+    return getPiValue(cacheLength);
   } catch (error) {
-    cacheLength = 0;
+    cacheLength = 1;
     return getPi();
   }
 };
@@ -27,7 +48,7 @@ app.put("/api/pi", (_, res) => {
 });
 
 app.post("/api/pi/reset", (_, res) => {
-  cacheLength = 0;
+  cacheLength = 1;
   res.json({
     data: getPi(),
   });
