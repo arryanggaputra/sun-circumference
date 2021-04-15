@@ -2,6 +2,9 @@
 
 This project was bootstrapped with ReactJS, ExpressJs, TailwindCSS.
 
+## How to run
+`yarn install` and `yarn dev`
+
 ## Available Hooks
 | Endpoint | Description |
  ------------- | ------------- |
